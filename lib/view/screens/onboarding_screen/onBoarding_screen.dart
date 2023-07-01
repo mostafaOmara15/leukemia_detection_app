@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
 import 'package:leukemia_detection_app/view/screens/auth/login_screen/login_screen.dart';
 import 'package:sizer/sizer.dart';
+import '../../../view_model/data/local/cache_helper.dart';
+import '../../../view_model/route/router.dart';
 import '../../resources/color_manager.dart';
 
 class OnBoardingScreen extends StatelessWidget {
@@ -13,7 +15,8 @@ class OnBoardingScreen extends StatelessWidget {
     return OnBoardingSlider(
       finishButtonText: 'Get start',
       onFinish: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+        CacheHelper.setBoolean("onBoarding", false);
+        Navigator.pushReplacementNamed(context, AppRoutes.loginScreenRoute);
       },
       finishButtonStyle: const FinishButtonStyle(
         backgroundColor: ColorManager.blackColor,

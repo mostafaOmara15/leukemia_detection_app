@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:leukemia_detection_app/model/patient_model.dart';
 import 'package:leukemia_detection_app/view/resources/padding_manager.dart';
-import 'package:leukemia_detection_app/view/screens/app_layout/layout_screen.dart';
 import 'package:leukemia_detection_app/view_model/constant.dart';
+import 'package:leukemia_detection_app/view_model/route/router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../resources/color_manager.dart';
@@ -65,7 +65,7 @@ class ResultScreen extends StatelessWidget {
                     ),
                   ),
                 )
-                :SizedBox(),
+                :const SizedBox(),
 
 
                 currentUser?.role == 'organization'
@@ -171,12 +171,12 @@ class ResultScreen extends StatelessWidget {
                         currentPatient!.examinerComment = commentCtrl.text;
                         await FirebaseFirestore.instance.collection('patients').doc().set(currentPatient!.toMap())
                           .then((value){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AppLayout(),));
+                            Navigator.pushReplacementNamed(context, AppRoutes.layoutScreenRoute);
                         });
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: ColorManager.blackColor,
-                        padding: EdgeInsets.all(15),
+                        backgroundColor: ColorManager.blackColor,
+                        padding: const EdgeInsets.all(15),
                         elevation: 3,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)

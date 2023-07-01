@@ -27,6 +27,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
   bool showPass = true;
   bool confirmShowPass = true;
   String userRole = "";
+  bool nationalIdField = false;
 
   /// function to change password visibility
   void changePasswordVisibility() {
@@ -40,6 +41,17 @@ class RegisterCubit extends Cubit<RegisterStates> {
   void selectingRadio(String value) {
     userRole = value;
     emit(RadioSelectionState());
+  }
+
+  void showNationalId() {
+    if (userRole == 'community'){
+      nationalIdField = true;
+      emit(ShowNationalIdField());
+    }
+    else {
+      nationalIdField = false;
+      emit(HideNationalIdField());
+    }
   }
 
   void userRegister({required String userName, required String email, required String password, String? nationalId, required String userRole})

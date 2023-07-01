@@ -5,6 +5,9 @@ import 'package:leukemia_detection_app/view/resources/image_manager.dart';
 import 'package:leukemia_detection_app/view/screens/onboarding_screen/onBoarding_screen.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../view_model/data/local/cache_helper.dart';
+import '../../../view_model/route/router.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -14,11 +17,20 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
+  bool onBoarding = CacheHelper.getBoolean("onBoarding") == null
+      ? true
+      : false;
+
   @override
   void initState()
   {
     super.initState();
-    Timer(const Duration(seconds:3), ()=> Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const OnBoardingScreen())));
+    if(onBoarding == true){
+      Timer(const Duration(seconds:3), () => Navigator.pushReplacementNamed(context, AppRoutes.onBoardingRoute,));
+    }
+    else{
+      Timer(const Duration(seconds:3), () => Navigator.pushReplacementNamed(context, AppRoutes.loginScreenRoute,));
+    }
   }
 
   @override

@@ -6,9 +6,11 @@ import 'package:leukemia_detection_app/view/screens/app_layout/home_screen/home_
 import 'package:leukemia_detection_app/view/screens/app_layout/layout_screen.dart';
 import 'package:leukemia_detection_app/view/screens/auth/login_screen/login_screen.dart';
 import 'package:leukemia_detection_app/view/widgets/cutom_text_form_field.dart';
+import 'package:leukemia_detection_app/view_model/constant.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../view_model/cubit/auth_cubit/register/register_cubit.dart';
 import '../../../../view_model/cubit/auth_cubit/register/register_states.dart';
+import '../../../../view_model/route/router.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/padding_manager.dart';
 import '../../../widgets/custom_button/custom_button.dart';
@@ -20,11 +22,11 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context)=> RegisterCubit(),
-        child: BlocConsumer<RegisterCubit, RegisterStates>(
-          listener: (BuildContext context, RegisterStates state) {
-            if(state is GetUserdataSuccessState){
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AppLayout()));
+      create: (context)=> RegisterCubit(),
+      child: BlocConsumer<RegisterCubit, RegisterStates>(
+        listener: (BuildContext context, RegisterStates state) {
+          if(state is GetUserdataSuccessState){
+              Navigator.pushReplacementNamed(context, AppRoutes.layoutScreenRoute);
               Fluttertoast.showToast(
                   msg: "Data obtained successfully",
                   toastLength: Toast.LENGTH_SHORT,
@@ -35,22 +37,22 @@ class RegisterScreen extends StatelessWidget {
                   fontSize: 16.0
               );
             }
-            else if(state is CreationErrorState){
-              Fluttertoast.showToast(
-                  msg: "Error",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.CENTER,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white,
-                  fontSize: 16.0
-              );
-            }
-          },
-          builder: (BuildContext context, RegisterStates states) {
+          else if(state is CreationErrorState){
+            Fluttertoast.showToast(
+              msg: "Error",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.red,
+              textColor: Colors.white,
+              fontSize: 16.0
+            );
+          }
+        },
+        builder: (BuildContext context, RegisterStates states) {
 
-            RegisterCubit registerCubit = RegisterCubit.get(context);
-            return Form(
+          RegisterCubit registerCubit = RegisterCubit.get(context);
+          return Form(
               key: registerCubit.registerKey,
               child: Scaffold(
                 body: Column(
@@ -69,7 +71,7 @@ class RegisterScreen extends StatelessWidget {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              SizedBox(height: 3.h),
+                              SizedBox(height: 1.5.h),
                               const Text(
                                   "Register",
                                   style: TextStyle(
@@ -78,7 +80,7 @@ class RegisterScreen extends StatelessWidget {
                                       fontWeight: FontWeight.w500
                                   )
                               ),
-                              SizedBox(height: 3.h),
+                              SizedBox(height: 2.h),
                               CustomTextFormField(
                                 fieldCtrl: registerCubit.userNameCtrl,
                                 validate: (value) {
@@ -151,21 +153,24 @@ class RegisterScreen extends StatelessWidget {
                                 },
                               ), ///confirm password text-field
                               SizedBox(height: 2.5.h,),
-                              CustomTextFormField(
-                                fieldCtrl: registerCubit.nationalIdCtrl,
-                                validate: (value) {
-                                  if (value.isEmpty) {
-                                    return 'Enter your National ID';
-                                  }
-                                  return null;
-                                },
-                                fieldIcon: Icons.onetwothree_rounded,
-                                fieldHint: "National ID",
-                                fieldInput: TextInputType.number,
-                                isSecured: false,
-                                withIcon: false,
-                              ),
-                              SizedBox(height: 2.5.h,),
+
+                              registerCubit.nationalIdField
+                              ? CustomTextFormField(
+                                  fieldCtrl: registerCubit.nationalIdCtrl,
+                                  validate: (value) {
+                                    if (value.isEmpty) {
+                                      return 'Enter your National ID';
+                                    }
+                                    return null;
+                                  },
+                                  fieldIcon: Icons.onetwothree_rounded,
+                                  fieldHint: "National ID",
+                                  fieldInput: TextInputType.number,
+                                  isSecured: false,
+                                  withIcon: false,
+                                )
+                              : const SizedBox(),
+                              SizedBox(height: 2.h,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
@@ -180,6 +185,7 @@ class RegisterScreen extends StatelessWidget {
                                             onChanged: (value) {
                                               registerCubit.selectingRadio(value!);
                                               print(registerCubit.userRole = value);
+                                              registerCubit.showNationalId();
                                             }
                                         ),
                                         const Expanded(
@@ -207,6 +213,7 @@ class RegisterScreen extends StatelessWidget {
                                             onChanged: (value) {
                                               registerCubit.selectingRadio(value!);
                                               print(registerCubit.userRole = value);
+                                              registerCubit.showNationalId();
                                             }
                                         ),
                                         const Expanded(
@@ -225,7 +232,7 @@ class RegisterScreen extends StatelessWidget {
                                 ]
                               ),
 
-                              SizedBox(height: 6.h,),
+                              SizedBox(height: 2.h,),
                               CustomButton(
                                 title: "Register",
                                 toDo: () {
@@ -262,7 +269,7 @@ class RegisterScreen extends StatelessWidget {
                                       ),
                                     ),
                                     onPressed: () {
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen(),));
+                                      Navigator.pushReplacementNamed(context, AppRoutes.loginScreenRoute);
                                     },
                                   ),
                                 ],
@@ -276,8 +283,8 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
             );
-          },
-        )
+        },
+      )
     );
   }
 }

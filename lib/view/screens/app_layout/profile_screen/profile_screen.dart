@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:leukemia_detection_app/view/resources/color_manager.dart';
 import 'package:leukemia_detection_app/view/resources/padding_manager.dart';
 import 'package:leukemia_detection_app/view_model/constant.dart';
+import 'package:leukemia_detection_app/view_model/data/remote/firebase_helper.dart';
+import 'package:leukemia_detection_app/view_model/route/router.dart';
+import 'package:sizer/sizer.dart';
 import '../../../widgets/custom_text_field.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -26,7 +29,7 @@ class ProfileScreen extends StatelessWidget {
               height: screenHigh * 0.29,
               child: Stack(
                 children: [
-                 Container(
+                 SizedBox(
                    height: screenHigh * 0.22,
                      //color: ColorManager.backgroundColor,
                      child: Image.asset('assets/profile_background.jpg', fit: BoxFit.cover)
@@ -67,6 +70,32 @@ class ProfileScreen extends StatelessWidget {
                   const Text("National ID", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: Colors.black)),
                   SizedBox(height: screenHigh * 0.02,),
                   CustomTextField(fieldCtrl: nationalIdCtrl, fieldIcon: Icons.onetwothree_rounded),
+                  SizedBox(height: 3.h),
+                  Center(
+                    child: ElevatedButton(
+                        onPressed: () async{
+                          await FirebaseHelper().signOut().then((value){
+                            Navigator.pushReplacementNamed(context, AppRoutes.loginScreenRoute);
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          padding: const EdgeInsets.all(15),
+                          elevation: 3,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15)
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text("Logout", style: TextStyle(fontSize: 12.sp)),
+                            SizedBox(width:2.w),
+                            const Icon(Icons.logout)
+                          ],
+                        )
+                    ),
+                  )
                 ],
               ),
             ),

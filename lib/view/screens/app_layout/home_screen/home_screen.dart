@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:leukemia_detection_app/view/resources/padding_manager.dart';
 import 'package:leukemia_detection_app/view/screens/app_layout/home_screen/patients_history/patients_history.dart';
 import 'package:leukemia_detection_app/view/screens/app_layout/test_screen/test_screen.dart';
+import 'package:leukemia_detection_app/view_model/constant.dart';
+import 'package:leukemia_detection_app/view_model/route/router.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../resources/color_manager.dart';
@@ -141,8 +143,9 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 1.5.h),
 
-              InkWell(
-                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => PatientsHistory())),
+              currentUser?.role == 'organization'
+              ? InkWell(
+                onTap: () => Navigator.pushNamed(context, AppRoutes.patientHistoryScreenRoute),
                 child: Container(
                   height: 16.h,
                   width: double.infinity,
@@ -160,6 +163,31 @@ class HomeScreen extends StatelessWidget {
                         "View patients history",
                         style: GoogleFonts.dmSerifDisplay(
                           textStyle: const TextStyle(color: Color(0xff2a454e), fontSize: 22),
+                        ),
+                      )
+                  ),
+                ),
+              )
+
+              : InkWell(
+                onTap: () => Navigator.pushNamed(context, AppRoutes.healthProfileScreenRoute),
+                child: Container(
+                  height: 16.h,
+                  width: double.infinity,
+                  padding: const EdgeInsets.only(right: 10),
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage("assets/2010.i606.001..online medicine set-02.jpg")
+                    ),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        "Make a heath profile",
+                        style: GoogleFonts.dmSerifDisplay(
+                          textStyle: const TextStyle(color: Color(0xffff7769), fontSize: 22),
                         ),
                       )
                   ),

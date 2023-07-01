@@ -8,6 +8,7 @@ import 'package:leukemia_detection_app/view/widgets/cutom_text_form_field.dart';
 import 'package:sizer/sizer.dart';
 import '../../../../view_model/cubit/auth_cubit/login/login_cubit.dart';
 import '../../../../view_model/cubit/auth_cubit/login/login_states.dart';
+import '../../../../view_model/route/router.dart';
 import '../../../resources/color_manager.dart';
 import '../../../resources/padding_manager.dart';
 import '../../../widgets/custom_button/custom_button.dart';
@@ -23,7 +24,7 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (BuildContext context, LoginStates state) {
           if (state is GetUserdataSuccessState){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AppLayout()));
+            Navigator.pushReplacementNamed(context, AppRoutes.layoutScreenRoute);
           }
         },
         builder: (BuildContext context, LoginStates states) {
@@ -140,7 +141,7 @@ class LoginScreen extends StatelessWidget {
                                     ),
                                   ),
                                   onPressed: () {
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+                                    Navigator.pushNamed(context, AppRoutes.registerScreenRoute);
                                   },
                                 ),
                               ],

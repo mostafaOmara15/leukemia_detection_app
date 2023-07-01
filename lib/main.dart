@@ -9,6 +9,8 @@ import 'package:leukemia_detection_app/view_model/cubit/auth_cubit/login/login_c
 import 'package:leukemia_detection_app/view_model/cubit/auth_cubit/register/register_cubit.dart';
 import 'package:leukemia_detection_app/view_model/cubit/block_observer.dart';
 import 'package:leukemia_detection_app/view_model/data/local/cache_helper.dart';
+import 'package:leukemia_detection_app/view_model/route/router.dart';
+import 'package:leukemia_detection_app/view_model/route/routes.dart';
 import 'package:sizer/sizer.dart';
 
 void main() async {
@@ -59,10 +61,10 @@ class MyApp extends StatelessWidget {
               ,
               )
           ),
-          home: const SplashScreen(),
+          //home: const SplashScreen(),
 
-          // initialRoute: AppRoutes.splashRoute,
-          // onGenerateRoute: onGenerate,
+          initialRoute: AppRoutes.splashRoute,
+          onGenerateRoute: onGenerate,
         )
         );
       },

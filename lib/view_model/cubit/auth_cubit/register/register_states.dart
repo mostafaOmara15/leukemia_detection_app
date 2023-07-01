@@ -21,9 +21,15 @@ class PasswordVisibilityState extends RegisterStates {}
 
 class RadioSelectionState extends RegisterStates {}
 
+class ShowNationalIdField extends RegisterStates {}
+
+class HideNationalIdField extends RegisterStates {}
+
 class GetUserdataLoadingState extends RegisterStates {}
 
 class GetUserdataSuccessState extends RegisterStates {}
 
 class GetUserdataErrorState extends RegisterStates {}
+
+
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:leukemia_detection_app/view/resources/padding_manager.dart';
 import 'package:leukemia_detection_app/view/screens/app_layout/test_screen/result_screen.dart';
@@ -203,17 +204,30 @@ class TestScreen extends StatelessWidget {
                         child: ElevatedButton(
                             onPressed: () async {
                               if (testCubit.testKey.currentState!.validate()) {
-                                await testCubit.fillPatientData(
-                                  testCubit.nameCtrl.text,
-                                  testCubit.ageCtrl.text,
-                                  testCubit.patientGender,
-                                  currentDate,
-                                  currentTime,
-                                  testCubit.nationalIdCtrl.text,
-                                ).then((value){
-                                  print(currentPatient?.toMap());
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ResultScreen(currentPatient)));
-                                });
+                                if (testCubit.bloodSample != null){
+                                  await testCubit.fillPatientData(
+                                    testCubit.nameCtrl.text,
+                                    testCubit.ageCtrl.text,
+                                    testCubit.patientGender,
+                                    currentDate,
+                                    currentTime,
+                                    testCubit.nationalIdCtrl.text,
+                                  ).then((value){
+                                    print(currentPatient?.toMap());
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => ResultScreen(currentPatient)));
+                                  });
+                                }
+                              }
+                              else {
+                                Fluttertoast.showToast(
+                                    msg: "Pic an Image",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.CENTER,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0
+                                );
                               }
                             },
                             style: ElevatedButton.styleFrom(
