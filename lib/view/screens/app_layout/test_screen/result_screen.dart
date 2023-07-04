@@ -99,9 +99,14 @@ class ResultScreen extends StatelessWidget {
                 )
                 : Column(
                   children: [
-                    Text("Please go to the nearest hospital or clinic to monitor your health condition.",
+                    SizedBox(height: 2.h,),
+                    patient!.testResult == 'Negative'
+                    ? Text("It's good that you are fine, but you have to go to the doctor to make sure you are safe",
                         style: GoogleFonts.fragmentMono(textStyle: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500))
-                    ),
+                    )
+                    :  Text("We are sorry about that, Please go to the nearest hospital or clinic to monitor your health condition.",
+                          style: GoogleFonts.fragmentMono(textStyle: const TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500))
+                      ),
                     SizedBox(height: 3.h,),
 
                     Text("--> If you don't know any clinics, you can get some help from Veseeta.",

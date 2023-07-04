@@ -66,29 +66,37 @@ class TestCubit extends Cubit<TestStates>{
     }
 
     // Replace this URL with the API endpoint that expects an image file
-    final url = Uri.parse('https://example.com/api/image');
+    final url = Uri.parse('http://192.168.1.5:8080/classify_image');
 
     try {
       final request = http.MultipartRequest('POST', url);
       request.files.add(await http.MultipartFile.fromPath('image', pickedImage!.path));
-      final response = await request.send();
-
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
       if (response.statusCode == 200) {
-        final responseData = await response.stream.transform(utf8.decoder).join();
-          prediction = responseData;
-        print(prediction);
-          emit(GetResponseState());
-      } else if (response.statusCode == 500){
-        prediction = "INTERNAL SERVER ERROR";
-        print(prediction);
         emit(GetResponseState());
+        final result = jsonDecode(response.body);
+          prediction = result.trim();
+          return [result.trim()];
+      } else {
+        throw Exception('Failed to connect to API');
       }
-      else {
-        print('Error: ${response.reasonPhrase}');
-        print(prediction);
-        prediction = "undefined";
-        emit(GetResponseState());
-      }
+      // if (response.statusCode == 200) {
+      //   final responseData = await response.stream.transform(utf8.decoder).join();
+      //     prediction = responseData;
+      //   print(prediction);
+      //     emit(GetResponseState());
+      // } else if (response.statusCode == 500){
+      //   prediction = "INTERNAL SERVER ERROR";
+      //   print(prediction);
+      //   emit(GetResponseState());
+      // }
+      // else {
+      //   print('Error: ${response.reasonPhrase}');
+      //   print(prediction);
+      //   prediction = "undefined";
+      //   emit(GetResponseState());
+      // }
     } catch (e) {
       print('Error: $e');
     }

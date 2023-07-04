@@ -67,10 +67,10 @@ class ProfileScreen extends StatelessWidget {
                   CustomTextField(fieldCtrl: roleCtrl, fieldIcon: Icons.business_sharp),
 
                   SizedBox(height: screenHigh * 0.02,),
-                  const Text("National ID", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: Colors.black)),
-                  SizedBox(height: screenHigh * 0.02,),
-                  CustomTextField(fieldCtrl: nationalIdCtrl, fieldIcon: Icons.onetwothree_rounded),
-                  SizedBox(height: 3.h),
+                  // const Text("National ID", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18, color: Colors.black)),
+                  // SizedBox(height: screenHigh * 0.02,),
+                  // CustomTextField(fieldCtrl: nationalIdCtrl, fieldIcon: Icons.onetwothree_rounded),
+                   SizedBox(height: 10.h),
                   Center(
                     child: ElevatedButton(
                         onPressed: () async{
@@ -79,7 +79,7 @@ class ProfileScreen extends StatelessWidget {
                           });
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
+                          backgroundColor: Colors.black,
                           padding: const EdgeInsets.all(15),
                           elevation: 3,
                           shape: RoundedRectangleBorder(
