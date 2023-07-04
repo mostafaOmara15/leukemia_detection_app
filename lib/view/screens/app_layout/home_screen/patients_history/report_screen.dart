@@ -73,16 +73,15 @@ class ReportScreen extends StatelessWidget {
 
                           SizedBox(height: 2.h,),
 
-                          currentUser?.role == 'organization'
-                          ? Column(
+                          Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("Comment:", style: GoogleFonts.fragmentMono(textStyle: const TextStyle(color: Colors.black, fontSize: 19, fontWeight: FontWeight.w500))),
                               SizedBox(height: 1.h),
                               TextField(
                                 controller: reportCubit.commentCtrl,
-
                                 cursorColor: ColorManager.blackColor,
+                                readOnly: currentUser!.role == 'organization' ? false : true,
                                 keyboardType: TextInputType.multiline,
                                 autocorrect: currentUser?.role == 'organization' ? true : false,
                                 textCapitalization: TextCapitalization.sentences,
@@ -101,13 +100,14 @@ class ReportScreen extends StatelessWidget {
                                 ),
                               ),
                             ],
-                          )
+                          ),
 
-                          : const SizedBox(),
+                          const SizedBox(),
                           SizedBox(height: 2.h,),
 
                           reportCubit.updateButton == true
-                          ? Center(
+                          ? currentUser!.role == 'organization'
+                            ? Center(
                             child: ElevatedButton(
                                 onPressed: () {
                                   reportCubit.updatePatientData(patient!).then((value) => Navigator.pop(context));
@@ -124,7 +124,10 @@ class ReportScreen extends StatelessWidget {
                                 child: Text("update changes", style: TextStyle(fontSize: 12.sp))
                             ),
                           )
-                          : const SizedBox()
+                            : const SizedBox()
+                          : const SizedBox(),
+
+                          SizedBox(height: 2.h,)
                         ],
                       ),
                     ),

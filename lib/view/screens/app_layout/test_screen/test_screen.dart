@@ -204,7 +204,6 @@ class TestScreen extends StatelessWidget {
                         child: ElevatedButton(
                             onPressed: () async {
                               if (testCubit.testKey.currentState!.validate()) {
-                                if (testCubit.bloodSample != null){
                                   await testCubit.fillPatientData(
                                     testCubit.nameCtrl.text,
                                     testCubit.ageCtrl.text,
@@ -216,18 +215,7 @@ class TestScreen extends StatelessWidget {
                                     print(currentPatient?.toMap());
                                     Navigator.push(context, MaterialPageRoute(builder: (context) => ResultScreen(currentPatient)));
                                   });
-                                }
-                              }
-                              else {
-                                Fluttertoast.showToast(
-                                    msg: "Pic an Image",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.CENTER,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.red,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0
-                                );
+
                               }
                             },
                             style: ElevatedButton.styleFrom(

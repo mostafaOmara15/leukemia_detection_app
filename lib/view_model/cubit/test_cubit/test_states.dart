@@ -8,3 +8,5 @@ class UnPickSampleState extends TestStates{}
 
 class SelectGenderState extends TestStates{}
 
+class GetResponseState extends TestStates{}
+

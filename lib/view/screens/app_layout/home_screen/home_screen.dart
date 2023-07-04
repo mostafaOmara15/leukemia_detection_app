@@ -3,6 +3,8 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:leukemia_detection_app/view/resources/padding_manager.dart';
 import 'package:leukemia_detection_app/view/screens/app_layout/home_screen/patients_history/patients_history.dart';
+import 'package:leukemia_detection_app/view/screens/app_layout/home_screen/search_result/comunity_search.dart';
+import 'package:leukemia_detection_app/view/screens/app_layout/home_screen/search_result/organization_search.dart';
 import 'package:leukemia_detection_app/view/screens/app_layout/test_screen/test_screen.dart';
 import 'package:leukemia_detection_app/view_model/constant.dart';
 import 'package:leukemia_detection_app/view_model/route/router.dart';
@@ -94,7 +96,7 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 1.5.h),
               InkWell(
                 child: Container(
-                  height: 16.h,
+                  height: 15.h,
                   width: double.infinity,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
@@ -120,7 +122,7 @@ class HomeScreen extends StatelessWidget {
               InkWell(
                 onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => TestScreen(),)),
                 child: Container(
-                  height: 16.h,
+                  height: 15.h,
                   width: double.infinity,
                   padding: const EdgeInsets.only(left: 20, right: 10),
                   decoration: const BoxDecoration(
@@ -143,56 +145,81 @@ class HomeScreen extends StatelessWidget {
               ),
               SizedBox(height: 1.5.h),
 
-              currentUser?.role == 'organization'
-              ? InkWell(
-                onTap: () => Navigator.pushNamed(context, AppRoutes.patientHistoryScreenRoute),
-                child: Container(
-                  height: 16.h,
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(right: 10),
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage("assets/history_pic.png")
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        "View patients history",
-                        style: GoogleFonts.dmSerifDisplay(
-                          textStyle: const TextStyle(color: Color(0xff2a454e), fontSize: 22),
-                        ),
-                      )
-                  ),
-                ),
-              )
 
-              : InkWell(
-                onTap: () => Navigator.pushNamed(context, AppRoutes.healthProfileScreenRoute),
-                child: Container(
-                  height: 16.h,
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(right: 10),
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage("assets/2010.i606.001..online medicine set-02.jpg")
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        "Make a heath profile",
-                        style: GoogleFonts.dmSerifDisplay(
-                          textStyle: const TextStyle(color: Color(0xffff7769), fontSize: 22),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: InkWell(
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.patientHistoryScreenRoute),
+                      child: Container(
+                        height: 15.h,
+                        width: 60.w,
+                        padding: const EdgeInsets.only(right: 8),
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: AssetImage("assets/history_pic.png")
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
-                      )
+                        child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              "View patients history",
+                              style: GoogleFonts.dmSerifDisplay(
+                                textStyle: const TextStyle(color: Color(0xff2a454e), fontSize: 15),
+                              ),
+                            )
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  SizedBox(width: 1.h),
+                  Expanded(
+                    flex: 1,
+                    child: InkWell(
+                      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => currentUser?.role == 'organization' ? OrganizationSearch() : CommunitySearch(),)),
+                      child: Container(
+                        height: 15.h,
+                        padding: const EdgeInsets.only(right: 8),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          image: DecorationImage(
+                              fit: BoxFit.scaleDown,
+                              image: AssetImage("assets/Human hand holding magnifying glass to search and find data.jpg")
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              // InkWell(
+              //   onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => SearchForResult(),)),
+              //   child: Container(
+              //     height: 16.h,
+              //     width: double.infinity,
+              //     padding: const EdgeInsets.only(right: 10),
+              //     decoration: const BoxDecoration(
+              //       image: DecorationImage(
+              //           fit: BoxFit.cover,
+              //           image: AssetImage("assets/2010.i606.001..online medicine set-02.jpg")
+              //       ),
+              //       borderRadius: BorderRadius.all(Radius.circular(20)),
+              //     ),
+              //     child: Align(
+              //         alignment: Alignment.centerRight,
+              //         child: Text(
+              //           "Make a heath profile",
+              //           style: GoogleFonts.dmSerifDisplay(
+              //             textStyle: const TextStyle(color: Color(0xffff7769), fontSize: 22),
+              //           ),
+              //         )
+              //     ),
+              //   ),
+              // ),
               SizedBox(height: 1.5.h),
             ]
           ),

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,9 +9,13 @@ import 'package:leukemia_detection_app/model/patient_model.dart';
 import 'package:leukemia_detection_app/view_model/constant.dart';
 import 'package:leukemia_detection_app/view_model/cubit/test_cubit/test_states.dart';
 import 'package:leukemia_detection_app/view_model/data/remote/firebase_helper.dart';
+import 'package:http/http.dart' as http;
+
 
 class TestCubit extends Cubit<TestStates>{
+
   TestCubit(): super(TestInitialState());
+
 
   static TestCubit get(context) => BlocProvider.of(context);
 
@@ -22,6 +27,8 @@ class TestCubit extends Cubit<TestStates>{
   TextEditingController ageCtrl = TextEditingController();
   String? patientGender ;
   String? bloodSample ;
+
+  String prediction = '';
 
 
   void selectingGender(String value) {
@@ -52,9 +59,46 @@ class TestCubit extends Cubit<TestStates>{
     });
   }
 
+  Future sendImage() async {
+    if (pickedImage == null) {
+      print('No image selected.');
+      return;
+    }
+
+    // Replace this URL with the API endpoint that expects an image file
+    final url = Uri.parse('https://example.com/api/image');
+
+    try {
+      final request = http.MultipartRequest('POST', url);
+      request.files.add(await http.MultipartFile.fromPath('image', pickedImage!.path));
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        final responseData = await response.stream.transform(utf8.decoder).join();
+          prediction = responseData;
+        print(prediction);
+          emit(GetResponseState());
+      } else if (response.statusCode == 500){
+        prediction = "INTERNAL SERVER ERROR";
+        print(prediction);
+        emit(GetResponseState());
+      }
+      else {
+        print('Error: ${response.reasonPhrase}');
+        print(prediction);
+        prediction = "undefined";
+        emit(GetResponseState());
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   Future<void> fillPatientData(String name, String age, String? gender, String testDate, String testTime, String nationalId) async{
-    await getSampleUrl().then((value){
-      currentPatient = PatientModel(name: name, age: age, gender: gender, testDate: testDate, testTime: testTime, nationalId: nationalId, examiner: currentUser!.uId, bloodSample: bloodSample);
-    });
+    await getSampleUrl().then((value) async {
+      await sendImage().then((value){
+        currentPatient = PatientModel(name: name, age: age, gender: gender, testDate: testDate, testTime: testTime, nationalId: nationalId, examiner: currentUser!.uId, bloodSample: bloodSample, testResult: prediction);
+      }).catchError((e) {print (e);});
+    }).catchError((e) {print (e);});
   }
 }

@@ -182,9 +182,10 @@ class ResultScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15)
                         ),
                       ),
-                      child: Text("Save result", style: TextStyle(fontSize: 12.sp))
+                      child: Text("Save result", style: TextStyle(fontSize: 12.sp)),
                   ),
-                )
+                ),
+                SizedBox(height: 2.h,)
               ],
             ),
           ),

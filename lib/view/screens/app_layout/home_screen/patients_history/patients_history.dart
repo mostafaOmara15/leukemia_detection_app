@@ -7,7 +7,6 @@ import 'package:leukemia_detection_app/view/screens/app_layout/home_screen/patie
 import 'package:leukemia_detection_app/view_model/constant.dart';
 import 'package:leukemia_detection_app/view_model/data/remote/firebase_helper.dart';
 import 'package:sizer/sizer.dart';
-import '../../test_screen/result_screen.dart';
 
 class PatientsHistory extends StatefulWidget {
   const PatientsHistory({Key? key}) : super(key: key);
@@ -27,7 +26,8 @@ class _PatientsHistoryState extends State<PatientsHistory> {
                 style: TextStyle(color: Colors.black, fontSize: 22)
             ),
         ),
-        body: FutureBuilder(
+        body:
+        FutureBuilder(
           future: FirebaseHelper().getPatientsByExaminerId(currentUser?.uId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -37,7 +37,12 @@ class _PatientsHistoryState extends State<PatientsHistory> {
               return const Center(child: Text('Failed to get patients'));
             }
             else if (snapshot.data!.isEmpty) {
-              return const Center(child: Text('No data', style: TextStyle(fontSize: 22)));
+              return Column(
+                children: [
+                  SizedBox(height: 40.h,),
+                  const Center(child: Text('No data', style: TextStyle(fontSize: 22))),
+                ],
+              );
             }
             else {
               final patients = snapshot.data as List<PatientModel>;
