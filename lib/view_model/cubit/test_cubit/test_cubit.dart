@@ -54,20 +54,17 @@ class TestCubit extends Cubit<TestStates>{
 
   Future<void> getSampleUrl() async{
     await FirebaseHelper().uploadImage(pickedImage).then((value) async {
-      print(value);
       bloodSample = value!;
     });
   }
 
-  Future sendImage() async {
+  Future sendSampleToApi() async {
     if (pickedImage == null) {
       print('No image selected.');
       return;
     }
-
     // Replace this URL with the API endpoint that expects an image file
-    final url = Uri.parse('http://192.168.1.5:8080/classify_image');
-
+    final url = Uri.parse('http://192.168.1.12:8080/classify_image');
     try {
       final request = http.MultipartRequest('POST', url);
       request.files.add(await http.MultipartFile.fromPath('image', pickedImage!.path));
@@ -81,22 +78,6 @@ class TestCubit extends Cubit<TestStates>{
       } else {
         throw Exception('Failed to connect to API');
       }
-      // if (response.statusCode == 200) {
-      //   final responseData = await response.stream.transform(utf8.decoder).join();
-      //     prediction = responseData;
-      //   print(prediction);
-      //     emit(GetResponseState());
-      // } else if (response.statusCode == 500){
-      //   prediction = "INTERNAL SERVER ERROR";
-      //   print(prediction);
-      //   emit(GetResponseState());
-      // }
-      // else {
-      //   print('Error: ${response.reasonPhrase}');
-      //   print(prediction);
-      //   prediction = "undefined";
-      //   emit(GetResponseState());
-      // }
     } catch (e) {
       print('Error: $e');
     }
@@ -104,8 +85,18 @@ class TestCubit extends Cubit<TestStates>{
 
   Future<void> fillPatientData(String name, String age, String? gender, String testDate, String testTime, String nationalId) async{
     await getSampleUrl().then((value) async {
-      await sendImage().then((value){
-        currentPatient = PatientModel(name: name, age: age, gender: gender, testDate: testDate, testTime: testTime, nationalId: nationalId, examiner: currentUser!.uId, bloodSample: bloodSample, testResult: prediction);
+      await sendSampleToApi().then((value){
+        currentPatient = PatientModel(
+            name: name,
+            age: age,
+            gender: gender,
+            testDate: testDate,
+            testTime: testTime,
+            nationalId: nationalId,
+            examiner: currentUser!.uId,
+            bloodSample: bloodSample,
+            testResult: prediction);
+
       }).catchError((e) {print (e);});
     }).catchError((e) {print (e);});
   }
